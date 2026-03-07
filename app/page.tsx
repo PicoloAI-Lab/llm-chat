@@ -1,8 +1,20 @@
+export const dynamic = "force-dynamic";
+
 import { PERSONAS } from "@/lib/personas";
+import { getAllPersonaMetadata, initDb } from "@/lib/db";
 import { PersonaCard } from "@/components/persona-card";
 import { Separator } from "@/components/ui/separator";
 
-export default function Home() {
+export default async function Home() {
+  await initDb();
+  const metadata = await getAllPersonaMetadata();
+
+  const personas = PERSONAS.map((p) => ({
+    ...p,
+    description: metadata[p.id]?.description ?? p.description,
+    issue: metadata[p.id]?.issue ?? p.issue,
+  }));
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="border-b px-8 py-4 flex items-center gap-3">
@@ -26,7 +38,7 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {PERSONAS.map((persona) => (
+          {personas.map((persona) => (
             <PersonaCard key={persona.id} persona={persona} />
           ))}
         </div>
