@@ -2,6 +2,8 @@ import { PERSONAS_MAP } from "@/lib/personas";
 import { ChatRoom } from "@/components/chat-room";
 import { notFound } from "next/navigation";
 
+// chat page
+
 export default async function ChatPage({
   params,
 }: {
